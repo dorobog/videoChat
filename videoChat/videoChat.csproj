@@ -183,11 +183,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-<<<<<<< HEAD
     <Compile Include="Controllers\ChatSessionController.cs" />
-=======
     <Compile Include="Controllers\GetSessionApiController.cs" />
->>>>>>> 5dbeb982fd09b01a305e0c6a96b42a80d4638268
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
