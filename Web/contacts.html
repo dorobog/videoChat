@@ -5,12 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/contacts.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <title>Dashboard</title>
   </head>
-  <body>
+ 
     <body>
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">MedVid</a>
@@ -30,8 +31,8 @@
                 
                 <ul class="nav flex-column">
                   <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                      Dashboard <span class="sr-only">(current)</span>
+                    <a class="nav-link " href="dashboard.html">
+                      Dashboard 
                     </a>
                   </li>
                   <li class="nav-item">
@@ -40,8 +41,8 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="contacts.html">
-                      Contacts
+                    <a class="nav-link active" href="contacts.html">
+                      Contacts<span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -98,16 +99,18 @@
     
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1 class="h2">Contacts</h1>
                 
               </div>
     
               <div id="page-content-wrapper">
                 <div class="container-fluid">
-                    <h1>Simple Sidebar</h1>
-                    <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                    <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                    <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
+                        <div class="card" style="width: 10rem;">
+                                <img class="card-img-top" src="img/doctor1.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                  <p class="card-text"><a href="#"><i class="fa fa-phone" id="phone"></i></a></i></p>
+                                </div>
+                        </div>    
                 </div>
             </div>
             </main>
@@ -130,5 +133,5 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
      
       </body>
-     </body>
+     
 </html>
