@@ -14,35 +14,34 @@ namespace videoChat.Controllers
         [HttpPost, Route("RegisterUseer")]
         public IHttpActionResult RegisterUser(RegisterUserModel User)
         {
-            try{
+            try
+            {
                 using (var ctx = new videoConEntities())
                 {
                     if (User == null)
                         return Ok("No Request Data");
 
-                    var newUser = ctx.Users.Add(new User {
+                    var newUser = ctx.Users.Add(new User
+                    {
                         UserId = Guid.NewGuid(),
                         FirstName = User.FirstName,
                         LastName_ = User.LastName,
                         Email = User.Email,
                         Password = User.Password
-                        });
+                    });
 
                     int result = ctx.SaveChanges();
-                    if(result == 1)
-                    return Ok(newUser);
-
-                  
-
+                    if (result == 1)
+                        return Ok(newUser);
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex.InnerException;
-             }
+            }
             return Ok(" Save not completed");
         }
-        
+
     }
 }

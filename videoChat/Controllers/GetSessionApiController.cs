@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using OpenTokSDK;
 using videoChat.Models;
+using videoChat.Views.Models;
 
 namespace videoChat.Controllers
 {
@@ -17,49 +18,56 @@ namespace videoChat.Controllers
         static string ApiSecret = "ba51037c2dc7056236c572e4f4e187b1f9899bff";
        
         OpenTok penTok = new OpenTok(ApiKey, ApiSecret);
-       static string sessionId;
 
-        [Route("CreateSession/GenerateToken"), HttpGet]
-        public IHttpActionResult CreateSession(CallerViewModel data)
+
+        [Route("InitiateCall"), HttpPost]
+        public IHttpActionResult IntiateCall(CallerViewModel data)
         {
-
-            if (data.CallerId != null)
+            using (var ctx = new videoConEntities())
             {
-                try
+                var caller = ctx.Users
+                    .Where(a => a.UserId == data.CallerId)
+                    .FirstOrDefault();
+                if (caller.UserId != null)
                 {
-                    var GenerateToken = new GenerateToken();
-                    //Creating a session
-                    var session = penTok.CreateSession();
-                    var token = session.GenerateToken();
-                    GenerateToken.SessionId = session.Id;
-                    GenerateToken.Token = token;
-                    return Ok(GenerateToken);
-                }
-                catch (Exception ex)
-                {
-                    throw ex.InnerException;
+                    try
+                    {
+
+                        var session = penTok.CreateSession();
+                        var token = session.GenerateToken();
+
+                        var callInfo = ctx.callInfoes.Add(new callInfo
+                        {
+                            CallInfoId = Guid.NewGuid(),
+                            CallerId = data.CallerId,
+                            ReceiverId = data.ReceiverId,
+                            SessionId = session.Id,
+                            Token = token
+                        });
+
+                        var newInfo = new callInfo();
+                        newInfo.CallerId = callInfo.CallerId;
+                        newInfo.ReceiverId = callInfo.CallerId;
+                        newInfo.SessionId = callInfo.SessionId;
+                        newInfo.CallInfoId = callInfo.CallInfoId;
+                        newInfo.Token = callInfo.Token;
+
+                        var result = ctx.SaveChanges();
+                        if (result == 1)
+                            return Ok(newInfo);
+                        else
+                            return Ok("Call failed");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
                 }
             }
+
             return Ok();
         }
 
-        [Route("GenerateToken/{id}"), HttpGet]
-        public IHttpActionResult generateToken(string id)
-        {
-
-
-            try
-            {
-                //Creating a session
-                string token = penTok.GenerateToken(id);
-               
-                return Ok(token);
-            }
-            catch (Exception ex)
-            {
-                throw ex.InnerException;
-            }
-        }
 
     }
 }
