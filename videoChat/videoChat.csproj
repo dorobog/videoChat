@@ -189,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CallerViewModel.cs" />
     <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\GenerateToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
