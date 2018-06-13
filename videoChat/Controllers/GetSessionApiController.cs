@@ -19,11 +19,11 @@ namespace videoChat.Controllers
         OpenTok penTok = new OpenTok(ApiKey, ApiSecret);
        static string sessionId;
 
-        [Route("CreateSession/GenerateToken/{id}"), HttpGet]
-        public IHttpActionResult CreateSession(Guid id)
+        [Route("CreateSession/GenerateToken"), HttpGet]
+        public IHttpActionResult CreateSession(CallerViewModel data)
         {
 
-            if (id != null)
+            if (data.CallerId != null)
             {
                 try
                 {
