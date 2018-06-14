@@ -1,55 +1,22 @@
-﻿function register() {
-	window.localStorage.removeItem('SessionID');
-	//idName("loading").style.display = "block";
-	$('#submit').attr('disabled', 'disabled');
-	var sessionid = guid();
-	var username = $('#username');
-	var email = $('#email');
-	var password = $('#password');
-	var signup = JSON.stringify({
-		Username: username.val(),
-		Email: email.val(),
-		Password: sha256(password.val()),
-		SessionID: sessionid
-	});
-	ajaxcall(apiBaseUrl + 'api/Account/Register', signup, "POST", "json", signUpProcess);
+﻿//callMode = 1 for outgoing and 2 for incoming
+function callModal(callMode, callerName, receiverName) {
+	var titleName = callMode == 1 ? callerName : reciever;
+	var bodyName = callMode == 2 ? "Incoming call from " + callerName : "Calling " + reciever; 
+	document.body.innerHTML += `<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <img src = "" class="rounded-circle" /><h5 class="modal-title" id="exampleModalLabel"> ${titleName} Outgoing Call</h5>
+            </div>
+            <div class="modal-body">
+               <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5>${bodyName}</h5>
+            </div>
+          </div>
+        </div>
+      </div>`;
+	$('#callModal').modal('show');
 }
 
-function signUpProcess(obj) {
-	try {
-		console.log(msg);
-		//$('#submit').removeAttr('disabled');
-		//idName("loading").style.display = "block";
-		login();
-	} catch (ex) {
-		//alert(ex.message);
-		$('#submit').removeAttr('disabled');
-		//idName("loading").style.display = "none";
-	}
-	spinnerOff();
-}
-function loginApi(msg, array) {
-	//debugger;
-	array = explodeString(array, ', ')
-	temporary = array[0] !== null ? array[0] : null;
-	try {
-		if (msg.userSessionID === array[1] || msg === "Currently Logged In") {
-			window.localStorage.setItem('sessionID', msg.userSessionID);
-			window.localStorage.setItem('userID', msg.userID);
-			window.localStorage.setItem('userName', msg.usernameEmail);
-			idName("header").style.display = "none";
-			//a = [temporaryUrl];
-			//ajaxcall(apiBaseUrl + "api/user/getUserProfile?id=" + msg.userID, "", "GET", "json", checkIfPossesProfile, a);
-			spinnerOff();
-			signedInNavBAr();
-			$("#loginModal").modal('hide');
-			USERID = msg.userID;
-		}
-	} catch (ex) {
-		//alert(ex.message);
-	}
-
-}
 function checkIfPossesProfile(obj, temporaryUrl) {
 	//debugger;
 	temporaryUrl = temporaryUrl !== null? explodeString(temporaryUrl, ", ") : [null];
@@ -77,190 +44,7 @@ function checkIfPossesProfile(obj, temporaryUrl) {
 		window.location.href = "index.html";
 	}
 }
-function loginprocss() {
-	temporaryUrl = window.localStorage.getItem('temporaryURL');
-	localStorage.clear();
-	var sessionid = guid();
-	//var username = $('#username');
-	var email = $('#email');
-	var password = $('#password');
-	var login = JSON.stringify({
-		//Username: username.val(),
-		Email: email.val(),
-		Password: sha256(password.val()),
-		SessionID: sessionid
-	});
-	var a = [temporaryUrl, sessionid]
-	ajaxcall(apiBaseUrl + 'api/Account/Login', login, "POST", "json", loginApi, a);
-}
-function login() {
-	//debugger;
-	if (!idName("loginModal")) {
-		document.body.innerHTML += `
-			<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title text-center" id="exampleModalLabel">Welcome to BookStore</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
 
-							<div class="col-md-12">
-								<div id="accountForm">
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-			</div>
-			<style>
-				input.error {
-					border: 1px solid red;
-					width: auto !important;
-				}
-				label.error {
-					color: red;
-					width: 1000px !important;
-				}
-			</style>`;
-		$.getScript(clientBaseUrl + 'vendor/jquery/jquery.validate.min.js', function () {
-			$.getScript(clientBaseUrl + 'js/crypto.js', function () {
-				loginForm();
-			});
-		});
-	}
-	$("#loginModal").modal('show');
-}
-function loginForm() {
-	idName("accountForm").innerHTML = `
-							<form action="#" id = "loginFormModal" class="navbar-form navbar-right" method="post">
-								<h1 class="text-center text-capitalize"><b>LOG IN</b></h1>
-								<div class="form-horizontal">
-									<div class="input-group">
-										
-										<input type="text" id="email" class="form-control" placeholder="Enter your Email Address" required name="email">
-                                    </div>
-										<br />
-										<div class="input-group">
-										
-											<input type="password" id="password" class="form-control" placeholder="Enter your password" required name="password">
-                                    </div>
-											<br />
-											<button type="submit" class="btn btn-primary btn-block">Login</button>
-											<!--<button type="submit" class="btn btn-danger btn-block">Sign Up with Google<span class="glyphicon glyphicon-log-in"></span></button>-->
-
-										</div>
-										<hr />
-										<h6 class="text-center">Dont have an account?<a href="#" id="submit" onclick="return signupForm();">SIGN UP</a></h6>
-                            </form>`;
-	$("#loginFormModal").validate({
-		rules: {
-			// The key name on the left side is the name attribute
-			// of an input field. Validation rules are defined
-			// on the right side
-			//username: "required",
-			email: {
-			    required: true,
-			    // Specify that email should be validated
-			    // by the built-in "email" rule
-			    email: true
-			},
-			password: {
-				required: true
-			}
-		},
-		// Specify validation error messages
-		messages: {
-			email: "Please enter a valid email",
-			password: {
-				required: "Please provide a password",
-				minlength: "Your password must be at least 5 characters long"
-			}
-			//email: "Please enter a valid email address"
-		},
-		// Make sure the form is submitted to the destination defined
-		// in the "action" attribute of the form when valid
-		submitHandler: function (form, event) {
-			event.preventDefault();
-			//debugger;
-			loginprocss();
-		}
-	});
-}
-function signupForm() {
-	idName("accountForm").innerHTML = `<form action="#" id = "signupFormModal" class="navbar-form navbar-right" method="post">
-										<h2 class="text-center text-capitalize"><b>SIGN UP</b></h2>
-										<div class="form-horizontal">
-											<div class="input-group">
-												<span class="input-group-addon"><a href="#"><span class="glyphicon glyphicon-user"></span></a></span>
-												<input type="text" id="email" class="form-control" placeholder="Enter your Email Adress" required name="email">
-                                    </div>
-												<br />
-												<div class="input-group">
-													
-													<input type="text" id="username" class="form-control" placeholder="Enter your Username" required name="username">
-                                    </div>
-													<br />
-													<div class="input-group">
-														
-														<input type="password" id="password" class="form-control" placeholder="Enter your password" required name="password">
-                                    </div>
-														<br />
-														<div class="input-group">
-															
-															<input type="password" id="password2" class="form-control" placeholder="Enter your Confirm Password" required name="password2">
-                                    </div>
-															<br />
-															<button type="submit" class="btn btn-primary btn-block">SIGN UP</span></button>
-															<!--<button type="submit" class="btn btn-danger btn-block">Sign Up with Google<span class="glyphicon glyphicon-log-in"></span></button>-->
-														</div>
-														<hr />
-														<h6 class="text-center">Already have an account?<a href="#" id="submit1" onclick="return loginForm();">LOG IN</a></h6>
-                            </form>`;
-	$("#signupFormModal").validate({
-		rules: {
-			// The key name on the left side is the name attribute
-			// of an input field. Validation rules are defined
-			// on the right side
-			username: "required",
-			check: "required",
-			email: {
-				required: true,
-				// Specify that email should be validated
-				// by the built-in "email" rule
-				email: true
-			},
-			password: {
-				required: true,
-				minlength: 5
-			},
-			password2: {
-				required: true,
-				minlength: 5,
-				equalTo: "#password"
-			}
-		},
-		// Specify validation error messages
-		messages: {
-			username: "Please enter your username",
-			password: {
-				required: "Please provide a password",
-				minlength: "Your password must be at least 5 characters long"
-			},
-			email: "Please enter a valid email address"
-		},
-		// Make sure the form is submitted to the destination defined
-		// in the "action" attribute of the form when valid
-		submitHandler: function (form, event) {
-			event.preventDefault();
-			register();
-		}
-	});
-}
 function spinnerOn() {
 	if(!idName('loading'))
 		{
@@ -289,10 +73,12 @@ function spinnerOn() {
 		else
 			idName("loading").style.display = "block";
 }
+
 function spinnerOff(){
 	if(idName('loading'))
 		idName("loading").style.display = "none";
 }
+
 function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
     loadingOption === "Yes" ? spinnerOn() : ""
     //debugger;
