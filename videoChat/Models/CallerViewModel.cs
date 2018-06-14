@@ -10,4 +10,10 @@ namespace videoChat.Models
         public Guid CallerId { get; set; } 
         public Guid ReceiverId { get; set; }
     }
+
+    public class LoginViewModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
 }
