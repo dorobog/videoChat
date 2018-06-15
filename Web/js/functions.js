@@ -1,7 +1,9 @@
 ﻿//callMode = 1 for outgoing and 2 for incoming
-function callModal(callMode, callerName, receiverName) {
-	var titleName = callMode == 1 ? callerName : reciever;
-	var bodyName = callMode == 2 ? "Incoming call from " + callerName : "Calling " + reciever; 
+function callModal(receiverObject, otherData) {
+	debugger;
+	var otherData = JSON.parse(otherData);
+	var titleName = (callMode * 1) === 1 ? otherData.callerName : receiverObject.FirstName + " " + receiverObject.LastName;
+	var bodyName = (callMode * 1) === 2 ? "Incoming call from " + otherData.callerName : "Calling " + receiverObject.FirstName + " " + receiverObject.LastName; 
 	document.body.innerHTML += `<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -9,6 +11,10 @@ function callModal(callMode, callerName, receiverName) {
               <img src = "" class="rounded-circle" /><h5 class="modal-title" id="exampleModalLabel"> ${titleName} Outgoing Call</h5>
             </div>
             <div class="modal-body">
+				<div id="videos" style="display:none;">
+					<div id="subscriber"></div>
+					<div id="publisher"></div>
+				</div>
                <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5>${bodyName}</h5>
             </div>
           </div>
@@ -108,6 +114,10 @@ function ajaxcall(url, params, requestType, responseType, callback, obj = [], lo
 function callbackError(obj){
 	alert("An error occurred");
 	spinnerOff();
+}
+
+function getProfileObject(userId, callback, obj = "", loadingOption = "No", callbackError) {
+	ajaxcall(apiBaseUrl + "api/getUserProfile/" + userId, "", "GET", "JSON", callback, obj, loadingOption, callbackError)
 }
 function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
     http.onreadystatechange = function () {

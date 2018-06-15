@@ -1,20 +1,21 @@
-
-
 function createSession(callerId, receiverId) {
+	debugger;
 	var data = JSON.stringify({
 		CallerId : callerId,
 		ReceiverId: receiverId
 	});
 	otherData = [data];
-	ajaxcall(apiBaseUrl + 'api/InitiateCall', data, requestType, responseType, callback, otherData, loadingOption = "Yes", callbackErrors);
+	ajaxcall(apiBaseUrl + 'api/InitiateCall', data, "POST", "JSON", makeCall, otherData);
 }
 
 //Other detail contains caller name and receiver name
 function makeCall(obj, otherDetail) {
+	debugger;
 	if (typeof obj === "object") {
-		otherDetail = JSON.parse(otherDetail)
+		otherDetails = [JSON.stringify({ callerName: "Akande Joshua", callMode: 1 })];
 		initializeSession(apiKey, sessionId, token);
-		callModal(callMode, callerName, receiverName);
+		getProfileObject(otherDetail.callerName, callModal, otherDetails, callModal)
+		
 	}
 	else {
 		alert(obj);
