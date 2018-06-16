@@ -1,6 +1,6 @@
 ﻿var clientBaseUrl = getRootUrl();
 var check = clientBaseUrl === "http://localhost:58163/"
-var apiBaseUrl = check ? "http://localhost:52978/" : "http://localhost:52978/";
+var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
 
 //generate guid
 var USERID = window.localStorage.getItem("userID");
