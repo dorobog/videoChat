@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using videoChat.Views.Models;
 
 namespace videoChat.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api")]
     public class UserController : ApiController
     {
@@ -35,6 +37,29 @@ namespace videoChat.Controllers
                 throw ex.InnerException;
             }
           
+        }
+
+        [Route("IsUserAvailable/{id}"), HttpGet]
+        public IHttpActionResult IsUserAvailable(Guid id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities())
+                {
+                    var user = (from u in ctx.loggedUsers
+                                where u.userId == id
+                                select new { u.email }).Any();
+                    if (user == false)
+                        return Ok(0);
+                    else
+                        return Ok(1);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+
         }
     }
 }

@@ -7,9 +7,11 @@ using System.Web.Http;
 using OpenTokSDK;
 using videoChat.Models;
 using videoChat.Views.Models;
+using System.Web.Http.Cors;
 
 namespace videoChat.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api")]
     public class GetSessionApiController : ApiController
     {
