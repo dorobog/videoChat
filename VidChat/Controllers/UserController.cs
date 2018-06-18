@@ -10,7 +10,7 @@ using videoChat.Views.Models;
 
 namespace videoChat.Controllers
 {
-    [EnableCors(origins: "http://localhost:58163/", headers: "*", methods: "*")]
+    [EnableCors("*", "*", "*")]
     [RoutePrefix("api")]
     public class UserController : ApiController
     {
