@@ -50,10 +50,15 @@ namespace videoChat.Controllers
                     var user = (from u in ctx.loggedUsers
                                 where u.userId == id
                                 select new { u.email }).Any();
-                    if (user == false)
-                        return Ok(0);
+
+                    var CallInfo = (from u in ctx.callInfoes
+                                    where u.ReceiverId == id
+                                    join m in ctx.Users on u.ReceiverId equals m.UserId 
+                                    select new {  m.FirstName, m.LastName_,m.Email,u.ReceiverId, u.SessionId,u.Token }).FirstOrDefault();
+                    if (user == false || CallInfo == null)
+                        return Ok("User isn't available");
                     else
-                        return Ok(1);
+                        return Ok(CallInfo);
                 }
             }
             catch (Exception ex)
@@ -62,5 +67,7 @@ namespace videoChat.Controllers
             }
 
         }
+
+           
     }
 }
