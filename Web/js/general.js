@@ -1,7 +1,9 @@
 ﻿var clientBaseUrl = getRootUrl();
 var check = clientBaseUrl === "http://localhost:58163/"
 var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
-
+const APIKEY = 46135162;
+var SESSIONID = "";
+var TOKEN = "";
 //generate guid
 var USERID = window.localStorage.getItem("userID");
 function guid() {

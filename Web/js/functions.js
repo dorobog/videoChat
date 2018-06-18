@@ -21,6 +21,7 @@ function callModal(receiverObject, otherData) {
         </div>
       </div>`;
 	$('#callModal').modal('show');
+	initializeSession(APIKEY, SESSIONID, TOKEN);
 }
 
 function checkIfPossesProfile(obj, temporaryUrl) {

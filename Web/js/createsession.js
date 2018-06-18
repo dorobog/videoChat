@@ -5,16 +5,19 @@ function createSession(callerId, receiverId) {
 		ReceiverId: receiverId
 	});
 	otherData = [data];
-	ajaxcall(apiBaseUrl + 'api/InitiateCall', data, "POST", "JSON", makeCall, otherData);
+	ajaxcall(apiBaseUrl + 'api/InitiateCall', data, "POST", "json", makeCall, otherData);
 }
 
 //Other detail contains caller name and receiver name
 function makeCall(obj, otherDetail) {
 	debugger;
+	otherDetail = explodeString(otherDetail, " ,")
+	receiverDetail = JSON.parse(otherDetail[0]);
 	if (typeof obj === "object") {
 		otherDetails = [JSON.stringify({ callerName: "Akande Joshua", callMode: 1 })];
-		initializeSession(apiKey, sessionId, token);
-		getProfileObject(otherDetail.callerName, callModal, otherDetails, callModal)
+		SESSIONID = obj.SessionId;
+		Token = obj.Token;
+		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails, callModal)
 		
 	}
 	else {
