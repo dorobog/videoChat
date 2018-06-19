@@ -16,7 +16,7 @@ function makeCall(obj, otherDetail) {
 	if (typeof obj === "object") {
 		otherDetails = [JSON.stringify({ callerName: "Akande Joshua", callMode: 1 })];
 		SESSIONID = obj.SessionId;
-		Token = obj.Token;
+		TOKEN = obj.Token;
 		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails, callModal)
 		
 	}

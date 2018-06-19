@@ -1,10 +1,12 @@
 ﻿//callMode = 1 for outgoing and 2 for incoming
+//callmode must always be part of the object in otherData
 function callModal(receiverObject, otherData) {
 	debugger;
 	var otherData = JSON.parse(otherData);
-	var titleName = (callMode * 1) === 1 ? otherData.callerName : receiverObject.FirstName + " " + receiverObject.LastName;
-	var bodyName = (callMode * 1) === 2 ? "Incoming call from " + otherData.callerName : "Calling " + receiverObject.FirstName + " " + receiverObject.LastName; 
-	document.body.innerHTML += `<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	var titleName = (otherData.callMode * 1) === 1 ? otherData.callerName : receiverObject.FirstName + " " + receiverObject.LastName;
+	var bodyName = (otherData.callMode * 1) === 2 ? "Incoming call from " + otherData.callerName : "Calling " + receiverObject.FirstName + " " + receiverObject.LastName;
+	if (idName("callModal") === null)
+		document.body.innerHTML += `<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -15,11 +17,15 @@ function callModal(receiverObject, otherData) {
 					<div id="subscriber"></div>
 					<div id="publisher"></div>
 				</div>
-               <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5>${bodyName}</h5>
+               <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5 id="exampleModalBody">${bodyName}</h5>
             </div>
           </div>
         </div>
       </div>`;
+	else {
+		idName("exampleModalLabel").innerHTML = titleName + "Outgoing Call";
+		idName("exampleModalBody").innerHTML = bodyName;
+	}
 	$('#callModal').modal('show');
 	initializeSession(APIKEY, SESSIONID, TOKEN);
 }
@@ -118,7 +124,7 @@ function callbackError(obj){
 }
 
 function getProfileObject(userId, callback, obj = "", loadingOption = "No", callbackError) {
-	ajaxcall(apiBaseUrl + "api/getUserProfile/" + userId, "", "GET", "JSON", callback, obj, loadingOption, callbackError)
+	ajaxcall(apiBaseUrl + "api/getUserProfile/" + userId, "", "GET", "json", callback, obj, loadingOption, callbackError)
 }
 function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
     http.onreadystatechange = function () {
