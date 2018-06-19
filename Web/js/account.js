@@ -46,18 +46,11 @@ $(document).ready(function () {
     },
     submitHandler: function (form, event) {
       event.preventDefault();
-      signup()
-      // ajaxcall(
-      //   apiBaseUrl + "api/registerUser",
-      //   formData(),
-      //   "POST",
-      //   completeAjax
-      // );
+      signup();
     }
   });
 
   function signup() {
-    //window.localStorage.removeItem('SessionID')
     $("#submit").html("Please wait...").prop("disabled", true)
     //var SessionID = guid();
     var FirstName = $("#firstname").val();
@@ -71,11 +64,11 @@ $(document).ready(function () {
       Password,
       //SessionID
     }
-    ajaxcall(baseUrl + 'Api/RegisterUser', Signup, 'POST', 'json', signUpProcess)
+    ajaxcall(apiBaseUrl + 'Api/RegisterUseer', Signup, 'POST', 'json', signUpProcess)
   }
   function signUpProcess(obj) {
-    try {
-      // console.log(msg);
+      try {
+          window.localStorage.setItem('UserId', obj.UserId)
       $('#submit').removeAttr('disabled');
       // idName("loading").style.display = "block";
       window.location.href = "login.html";
