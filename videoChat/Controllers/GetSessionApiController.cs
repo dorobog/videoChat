@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using OpenTokSDK;
 using videoChat.Models;
 using videoChat.Views.Models;
+using System.Web.Http.Cors;
 
 namespace videoChat.Controllers
 {
-    [RoutePrefix("api")]
+    [EnableCors(origins: "http://localhost:58163/", headers: "*", methods: "*"), RoutePrefix("api")]
     public class GetSessionApiController : ApiController
     {
 
