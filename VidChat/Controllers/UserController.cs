@@ -69,6 +69,29 @@ namespace videoChat.Controllers
 
         }
 
-           
+        [Route("AllUsers/{id}"), HttpGet]
+        public IHttpActionResult AllUsers(Guid id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities1())
+                {
+                    var CallInfo = (from u in ctx.Users 
+                                    where u.UserId != id
+                                    select new { u.FirstName, u.LastName_, u.Email, u.UserId }).ToList();
+                    if (CallInfo == null)
+                        return Ok("User isn't available");
+                    else
+                        return Ok(CallInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+
+        }
+
+
     }
 }
