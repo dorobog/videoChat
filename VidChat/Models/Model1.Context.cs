@@ -29,5 +29,6 @@ namespace VidChat.Models
         public virtual DbSet<loggedUser> loggedUsers { get; set; }
         public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<CallHistory> CallHistories { get; set; }
     }
 }

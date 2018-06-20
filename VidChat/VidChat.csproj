@@ -206,6 +206,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CallerViewModel.cs" />
+    <Compile Include="Models\CallHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\callInfo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
