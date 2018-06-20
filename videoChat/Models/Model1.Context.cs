@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace videoChat.Views.Models
+namespace videoChat.Models
 {
     using System;
     using System.Data.Entity;
