@@ -3,8 +3,8 @@
 function callModal(receiverObject, otherData) {
 	debugger;
 	var otherData = JSON.parse(otherData);
-	var titleName = (otherData.callMode * 1) === 1 ? otherData.callerName : receiverObject.FirstName + " " + receiverObject.LastName;
-	var bodyName = (otherData.callMode * 1) === 2 ? "Incoming call from " + otherData.callerName : "Calling " + receiverObject.FirstName + " " + receiverObject.LastName;
+	var titleName = (otherData.callMode * 1) === 1 ? otherData.callerName : receiverObject.FirstName + " " + receiverObject.LastName_;
+	var bodyName = (otherData.callMode * 1) === 2 ? "Incoming call from " + otherData.callerName : "Calling " + receiverObject.FirstName + " " + receiverObject.LastName_;
 	if (idName("callModal") === null)
 		document.body.innerHTML += `<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -91,33 +91,6 @@ function spinnerOff(){
 	if(idName('loading'))
 		idName("loading").style.display = "none";
 }
-
-function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
-    loadingOption === "Yes" ? spinnerOn() : ""
-    //debugger;
-    //if (requestType === "POST") {
-    //    if (typeof params === "object")
-    //        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
-    //    else if (typeof params === "string") {
-    //        params = JSON.parse(params);
-    //        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
-    //        params = JSON.stringify(params);
-    //    }
-    //    //if (JSON.parse(params))
-
-    //}
-  //  else if (requestType === "GET") {
-		//if(url.match(/\?./))
-  //      url = url +  '&key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
-		//else
-		//url = url +  '?key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
-  //  }
-
-    var http = setajax(url, requestType);
-    ajaxcallnew(http, callback, obj, loadingOption, callbackErrors);
-	http.responseType = responseType;
-    http.send(params);
-}
 function callbackError(obj){
 	alert("An error occurred");
 	spinnerOff();
@@ -125,6 +98,33 @@ function callbackError(obj){
 
 function getProfileObject(userId, callback, obj = "", loadingOption = "No", callbackError) {
 	ajaxcall(apiBaseUrl + "api/getUserProfile/" + userId, "", "GET", "json", callback, obj, loadingOption, callbackError)
+}
+
+function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
+	loadingOption === "Yes" ? spinnerOn() : ""
+	//debugger;
+	//if (requestType === "POST") {
+	//    if (typeof params === "object")
+	//        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
+	//    else if (typeof params === "string") {
+	//        params = JSON.parse(params);
+	//        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
+	//        params = JSON.stringify(params);
+	//    }
+	//    //if (JSON.parse(params))
+
+	//}
+	//  else if (requestType === "GET") {
+	//if(url.match(/\?./))
+	//      url = url +  '&key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
+	//else
+	//url = url +  '?key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
+	//  }
+
+	var http = setajax(url, requestType);
+	ajaxcallnew(http, callback, obj, loadingOption, callbackErrors);
+	http.responseType = responseType;
+	http.send(params);
 }
 function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
     http.onreadystatechange = function () {
