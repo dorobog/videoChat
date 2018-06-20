@@ -81,39 +81,37 @@ namespace videoChat.Controllers
             return Ok(" Save not completed");
         }
 
-        //[HttpPost, Route("LogOut/{id}")]
-        //public IHttpActionResult LogOut(Guid Id)
-        //{
-        //    try
-        //    {
-        //        using (var ctx = new videoConEntities1())
-        //        {
-        //            if (Id == null)
-        //                return Ok("No Request Data");
+        [HttpPost, Route("LogOut/{id}")]
+        public IHttpActionResult LogOut(Guid Id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities1())
+                {
+                    if (Id == null)
+                        return Ok("No Request Data");
 
-        //            var loginUser = ctx.Users
-        //                .Where(a => a.Email == User.Email)
-        //                .FirstOrDefault();
-        //            if (loginUser == null)
-        //                return Ok("User with this mail " + User.Email + " those not exit.");
-        //            var LoggedUser = ctx.loggedUsers.Add(new loggedUser
-        //            {
-        //                userId = loginUser.UserId,
-        //                loggedTime = DateTime.Now,
-        //                email = loginUser.Email
-        //            });
-        //            int result = ctx.SaveChanges();
-        //            if (result == 1)
-        //                return Ok(LoggedUser);
-        //        }
+                    var loggedUser = ctx.loggedUsers
+                        .Where(a => a.userId == Id)
+                        .FirstOrDefault();
+                    if (loggedUser == null)
+                        return Ok("User those not exit.");
+                    var user = ctx.loggedUsers.Where(a => a.userId == Id).FirstOrDefault();
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex.InnerException;
-        //    }
-        //    return Ok(" Save not completed");
-        //}
+                    ctx.loggedUsers.Remove(user);
+                    int result = ctx.SaveChanges();
+
+                    if (result > 0)
+                        return Ok("Successfully Logged Off");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+            return Ok(" Save not completed");
+        }
 
 
     }
