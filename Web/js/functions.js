@@ -10,13 +10,13 @@ function callModal(receiverObject, otherData) {
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <img src = "" class="rounded-circle" /><h5 class="modal-title" id="exampleModalLabel"> ${titleName} Outgoing Call</h5>
+              <img src = "" class="rounded-circle" /><h5 class="modal-title" id="exampleModalLabel"> ${titleName}</h5>
             </div>
             <div class="modal-body">
-				<div id="videos" style="display:none;">
+				<!--<div id="videos" style="display:none;">
 					<div id="subscriber"></div>
 					<div id="publisher"></div>
-				</div>
+				</div>-->
                <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5 id="exampleModalBody">${bodyName}</h5>
             </div>
           </div>

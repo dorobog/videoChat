@@ -1,4 +1,28 @@
 ﻿var worker = new Worker('js/checkcall.js');
-worker.onmessage = function (event) {
-	console.log(event.data);
-};
+if (USERID !== null) {
+	var object = {
+		UserID: USERID,
+		APIBASEURL: apiBaseUrl
+	}
+	worker.postMessage(object)
+
+	worker.onmessage = function (e) {
+		debugger;
+		if (typeof event.data === "object") {
+			obj = JSON.stringify({
+				callerName: e.data.FirstName + " " + e.data.LastName_,
+				callMode: 2
+
+			});
+			obj2 = {
+				FirstName: e.data.FirstName,
+				LastName_: e.data.LastName_
+
+			};
+			callModal(obj2, obj);
+		}
+
+			//console.log(event.data);
+
+	};
+}

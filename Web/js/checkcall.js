@@ -1,11 +1,12 @@
-﻿var clientBaseUrl = "http://localhost:61465/"
-var check = clientBaseUrl === "http://localhost:58163/"
-var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
-const APIKEY = 46135162;
-var SESSIONID = "";
-var TOKEN = "";
+﻿//var clientBaseUrl = "http://localhost:61465/"
+//var check = clientBaseUrl === "http://localhost:58163/"
+//var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
+//const APIKEY = 46135162;
+//var SESSIONID = "";
+//var TOKEN = "";
+
 //generate guid
-var USERID = "96e61988-cc5c-47ee-b624-8be391ceed6b";
+//var USERID = localStorage.getItem("UserID");
 function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
 	//loadingOption === "Yes" ? spinnerOn() : ""
 	//debugger;
@@ -32,10 +33,12 @@ function ajaxcall(url, params, requestType, responseType, callback, obj = [], lo
 	http.responseType = responseType;
 	http.send(params);
 }
+
 function callbackError(obj) {
-	alert("An error occurred");
+	console.log(obj)
 	//spinnerOff();
 }
+
 function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
 	http.onreadystatechange = function () {
 		if (http.readyState === 4 && http.status === 200) {
@@ -54,6 +57,7 @@ function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
 		}
 	};
 }
+
 //setajax
 function setajax(url, requestType, responseType) {
 	//if (window.XMLHttpRequest) {
@@ -68,6 +72,7 @@ function setajax(url, requestType, responseType) {
 	http.setRequestHeader("Content-type", "application/json; charset=utf-8");
 	return http;
 }
+
 //populate an image tag with base64 code
 
 function receiveCall(obj) {
@@ -80,12 +85,14 @@ function receiveCall(obj) {
 		console.log('Posting message back to main script');
 	}
 	else {
-		setTimeout("receiving()", 500);
+		setTimeout("onmessage(object)", 500);
 	}
 	postMessage(workerResult);
 }
-
-function receiving() {
-	ajaxcall(apiBaseUrl + "api/IsUserAvailable/" + USERID, "", "GET", "json", receiveCall)
+debugger;
+var object;
+onmessage = function (e) {
+	object = e;
+	//console.log(e.data);
+	ajaxcall(e.data.APIBASEURL + "api/IsUserAvailable/" + e.data.UserID, "", "GET", "json", receiveCall)
 }
-receiving();

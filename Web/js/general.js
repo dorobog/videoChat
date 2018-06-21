@@ -4,8 +4,9 @@ var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
 const APIKEY = 46135162;
 var SESSIONID = "";
 var TOKEN = "";
+var FULLNAME = window.localStorage.getItem("fullName");
 //generate guid
-var USERID = "389ea3cd-08df-4ffb-b416-2aa8cc71bd7d";
+var USERID = window.localStorage.getItem("userID");
 function guid() {
     var gd = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0,
