@@ -67,6 +67,90 @@ namespace videoChat.Controllers
             return Ok();
         }
 
+        [Route("PickCall/{id}"), HttpPost]
+        public IHttpActionResult PickCall(Guid id)
+        {
+            using (var ctx = new videoConEntities1())
+            {
+                var PickCall = ctx.callInfoes
+                    .Where(a => a.ReceiverId == id)
+                    .FirstOrDefault();
+                if (PickCall != null)
+                {
+                    try
+                    {
+                        PickCall.TimeCallPicked = DateTime.Now;
+                        var callInfo = ctx.CallHistories.Add(new CallHistory
+                        { 
+                            CallHistoryId = Guid.NewGuid(),
+                            CallerId = PickCall.CallerId.ToString(),
+                            ReceiverId = PickCall.ReceiverId.ToString(),
+                            TimeCallBegan = DateTime.Now
+                        });
+                        var newDetails = (from m in ctx.callInfoes
+                                          where id == m.ReceiverId
+                                          join n in ctx.CallHistories on m.ReceiverId equals id
+                                          select new {
+                                              n.CallHistoryId,
+                                              n.CallerId,
+                                              n.ReceiverId,
+                                              n.TimeCallBegan,
+                                              m.SessionId,
+                                              m.Token
+                                          }).SingleOrDefault();
 
+
+                        var result = ctx.SaveChanges();
+
+                        if (result > 1)
+                            return Ok(newDetails);
+                        else
+                            return Ok("Call failed");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                }
+            }
+
+            return Ok();
+        }
+
+        [Route("EndCall/{id}"), HttpPost]
+        public IHttpActionResult EndCall(Guid id)
+        {
+            using (var ctx = new videoConEntities1())
+            {
+                var EndCall = ctx.callInfoes
+                    .Where(a => a.ReceiverId == id || a.CallerId == id)
+                    .FirstOrDefault();
+                if (EndCall != null)
+                {
+                    try
+                    {
+                        EndCall.TimeCallPicked = DateTime.Now;
+                        ctx.callInfoes.Remove(EndCall);
+
+                        var result = ctx.SaveChanges();
+
+                        if (result > 0)
+                        { 
+                        var updateTime = ctx.CallHistories.Where(a => a.CallHistoryId == id).FirstOrDefault();
+                        updateTime.TimeCallEnded = DateTime.Now;
+                            return Ok("Call Ended");
+                        }
+                        else
+                            return Ok("Call Not Ended");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                }
+            }
+
+            return Ok("Incorrect Id");
+        }
     }
 }

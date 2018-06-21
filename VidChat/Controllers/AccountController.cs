@@ -80,6 +80,40 @@ namespace videoChat.Controllers
             }
             return Ok(" Save not completed");
         }
+
+        [HttpPost, Route("LogOut/{id}")]
+        public IHttpActionResult LogOut(Guid Id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities1())
+                {
+                    if (Id == null)
+                        return Ok("No Request Data");
+
+                    var loggedUser = ctx.loggedUsers
+                        .Where(a => a.userId == Id)
+                        .FirstOrDefault();
+                    if (loggedUser == null)
+                        return Ok("User those not exit.");
+                    var user = ctx.loggedUsers.Where(a => a.userId == Id).FirstOrDefault();
+
+                    ctx.loggedUsers.Remove(user);
+                    int result = ctx.SaveChanges();
+
+                    if (result > 0)
+                        return Ok("Successfully Logged Off");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+            return Ok(" Save not completed");
+        }
+
+
     }
 
 }

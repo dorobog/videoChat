@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using VidChat.Models;
-using videoChat.Views.Models;
+
 
 namespace videoChat.Controllers
 {
@@ -53,8 +53,9 @@ namespace videoChat.Controllers
 
                     var CallInfo = (from u in ctx.callInfoes
                                     where u.ReceiverId == id
-                                    join m in ctx.Users on u.ReceiverId equals m.UserId 
-                                    select new {  m.FirstName, m.LastName_,m.Email,u.ReceiverId, u.SessionId,u.Token }).FirstOrDefault();
+                                    join r in ctx.Users on u.ReceiverId equals r.UserId
+                                    join c in ctx.Users on u.CallerId equals c.UserId
+                                    select new { r.FirstName, r.LastName_, r.Email,u.ReceiverId, u.SessionId,u.Token,CallerId = u.CallerId,CallerFirstName = c.FirstName, CallerLastName = c.LastName_ }).FirstOrDefault();
                     if (user == false || CallInfo == null)
                         return Ok("User isn't available");
                     else
@@ -68,6 +69,29 @@ namespace videoChat.Controllers
 
         }
 
-           
+        [Route("AllUsers/{id}"), HttpGet]
+        public IHttpActionResult AllUsers(Guid id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities1())
+                {
+                    var CallInfo = (from u in ctx.Users 
+                                    where u.UserId != id
+                                    select new { u.FirstName, u.LastName_, u.Email, u.UserId }).ToList();
+                    if (CallInfo == null)
+                        return Ok("User isn't available");
+                    else
+                        return Ok(CallInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+
+        }
+
+
     }
 }

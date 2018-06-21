@@ -14,7 +14,7 @@ function makeCall(obj, otherDetail) {
 	otherDetail = explodeString(otherDetail, " ,")
 	receiverDetail = JSON.parse(otherDetail[0]);
 	if (typeof obj === "object") {
-		otherDetails = [JSON.stringify({ callerName: "Akande Joshua", callMode: 1 })];
+		otherDetails = [JSON.stringify({ callerName: FULLNAME, callMode: 1 })];
 		SESSIONID = obj.SessionId;
 		TOKEN = obj.Token;
 		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails, callModal)
