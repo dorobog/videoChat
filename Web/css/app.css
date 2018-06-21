@@ -27,6 +27,6 @@ body, html {
     bottom: 10px;
     left: 10px;
     z-index: 100;
-    border: 3px solid white;
+    border: 3px solid blueviolet;
     border-radius: 3px;
 }
