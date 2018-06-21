@@ -81,17 +81,29 @@ namespace videoChat.Controllers
                     {
                         PickCall.TimeCallPicked = DateTime.Now;
                         var callInfo = ctx.CallHistories.Add(new CallHistory
-                        {
+                        { 
                             CallHistoryId = Guid.NewGuid(),
                             CallerId = PickCall.CallerId.ToString(),
                             ReceiverId = PickCall.ReceiverId.ToString(),
                             TimeCallBegan = DateTime.Now
                         });
+                        var newDetails = (from m in ctx.callInfoes
+                                          where id == m.ReceiverId
+                                          join n in ctx.CallHistories on m.ReceiverId equals id
+                                          select new {
+                                              n.CallHistoryId,
+                                              n.CallerId,
+                                              n.ReceiverId,
+                                              n.TimeCallBegan,
+                                              m.SessionId,
+                                              m.Token
+                                          }).SingleOrDefault();
+
 
                         var result = ctx.SaveChanges();
 
                         if (result > 1)
-                            return Ok(callInfo);
+                            return Ok(newDetails);
                         else
                             return Ok("Call failed");
                     }
