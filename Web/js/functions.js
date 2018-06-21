@@ -17,7 +17,7 @@ function callModal(receiverObject, otherData) {
 					<div id="subscriber"></div>
 					<div id="publisher"></div>
 				</div>-->
-               <img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /> <h5 id="exampleModalBody">${bodyName}</h5>
+               <a id = "pickCall" href=${(otherData.callMode * 1) === 2 ? "call.html" : "#"}><img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /></a> <h5 id="exampleModalBody">${bodyName}</h5>
             </div>
           </div>
         </div>
