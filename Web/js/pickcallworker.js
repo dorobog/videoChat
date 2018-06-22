@@ -1,13 +1,4 @@
-﻿//var clientBaseUrl = "http://localhost:61465/"
-//var check = clientBaseUrl === "http://localhost:58163/"
-//var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
-//const APIKEY = 46135162;
-//var SESSIONID = "";
-//var TOKEN = "";
-
-//generate guid
-//var USERID = localStorage.getItem("UserID");
-function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
+﻿function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
 	//loadingOption === "Yes" ? spinnerOn() : ""
 	//debugger;
 	//if (requestType === "POST") {
@@ -61,11 +52,11 @@ function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
 //setajax
 function setajax(url, requestType, responseType) {
 	//if (window.XMLHttpRequest) {
-		// code for modern browsers
-		http = new XMLHttpRequest();
+	// code for modern browsers
+	http = new XMLHttpRequest();
 	//} else {
-		// code for old IE browsers
-		//http = new ActiveXObject("Microsoft.XMLHTTP");
+	// code for old IE browsers
+	//http = new ActiveXObject("Microsoft.XMLHTTP");
 	//}
 	http.open(requestType, url, true);
 	//Send the proper header information along with the request
@@ -75,7 +66,7 @@ function setajax(url, requestType, responseType) {
 
 //populate an image tag with base64 code
 
-function receiveCall(obj) {
+function pickCall(obj) {
 	//debugger;
 	var workerResult = "";
 	if (typeof obj === "object") {
@@ -94,5 +85,5 @@ var object;
 onmessage = function (e) {
 	object = e;
 	//console.log(e.data);
-	ajaxcall(e.data.APIBASEURL + "api/IsUserAvailable/" + e.data.UserID, "", "GET", "json", receiveCall)
+	ajaxcall(e.data.APIBASEURL + "api/PickCall/" + e.data.UserID, "", "POST", "json", pickCall)
 }

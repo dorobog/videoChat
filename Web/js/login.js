@@ -23,15 +23,16 @@
         }
     });
 
-    function login() {
-        $("#loginsubmit").html("Please wait...").prop("disabled", true)
-        var SessionID = guid();
+	function login() {
+		idName("loginsubmit").setAttribute("disabled", true);
+		idName("loginsubmit").innerHTML = "Please wait...";
+        //var SessionID = guid();
         var Email = $('#email').val();
         var Password = sha256($('#password').val());
         var Login = JSON.stringify({
             Email,
-            Password,
-            SessionID
+            Password
+            //SessionID
         });
         var url = apiBaseUrl + 'Api/Login';
         ajaxcall(url, Login, "POST", "json", loginApi);
@@ -41,15 +42,20 @@
         debugger;
         try {
             if (typeof obj === 'object') {
-                window.localStorage.setItem('SessionID', obj.SessionID);
+                //window.localStorage.setItem('SessionID', obj.SessionID);
                 window.localStorage.setItem('userID', obj.userId);
-                window.localStorage.setItem('userName', obj.email);
-                window.location.href = "dashboard.html";
-                //ajaxcall(apiBaseUrl + "api/user/getUserProfile?id=" + msg.userID, "", "GET", "json", checkIfPossesProfile, data);
+				window.localStorage.setItem('userName', obj.email);
+				USERID = obj.userId;
+				getProfileObject(USERID, getName, [""], "No");
             }
         } catch (ex) {
             console.log(ex.message);
         }
 
-    }
+	}
+
+	function getName(obj) {
+		window.localStorage.setItem('fullName', obj.FirstName + " " + obj.LastName_);
+		window.location.href = "dashboard.html";
+	}
 });

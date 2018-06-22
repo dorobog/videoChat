@@ -14,19 +14,20 @@ function makeCall(obj, otherDetail) {
 	otherDetail = explodeString(otherDetail, " ,")
 	receiverDetail = JSON.parse(otherDetail[0]);
 	if (typeof obj === "object") {
-		otherDetails = [JSON.stringify({ callerName: "Akande Joshua", callMode: 1 })];
-		SESSIONID = obj.SessionId;
-		TOKEN = obj.Token;
-		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails, callModal)
-		
+		otherDetails = [JSON.stringify({ callerName: FULLNAME, callMode: 1 })];
+
+		window.localStorage.setItem("SessionID", obj.SessionId);
+		window.localStorage.setItem("Token", obj.Token);
+		window.localStorage.setItem("ReceiverID", receiverDetail.ReceiverId);
+		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails);
+		window.location.href = "call.html"
 	}
 	else {
 		alert(obj);
 	}
 }
-
+//
 function checkCall(){
-  ajaxcall(url, "", requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors);
-
+	ajaxcall(url, "", requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors);
 }
 
