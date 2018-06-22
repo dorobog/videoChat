@@ -154,7 +154,7 @@ namespace videoChat.Controllers
             return Ok("Incorrect Id");
         }
 
-        [Route("IsCallPicked/{id}"), HttpPost]
+        [Route("IsCallPicked/{id}"), HttpGet]
         public IHttpActionResult IsCallPicked(Guid id)
         {
             using (var ctx = new videoConEntities1())
