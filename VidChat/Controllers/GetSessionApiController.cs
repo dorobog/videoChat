@@ -69,43 +69,42 @@ namespace videoChat.Controllers
 
         [Route("PickCall/{id}"), HttpPost]
         public IHttpActionResult PickCall(Guid id)
-        {
+         {
             using (var ctx = new videoConEntities1())
             {
                 var PickCall = ctx.callInfoes
                     .Where(a => a.ReceiverId == id)
                     .FirstOrDefault();
+
                 if (PickCall != null)
                 {
                     try
                     {
                         PickCall.TimeCallPicked = DateTime.Now;
                         var callInfo = ctx.CallHistories.Add(new CallHistory
-                        { 
+                        {
                             CallHistoryId = Guid.NewGuid(),
                             CallerId = PickCall.CallerId.ToString(),
                             ReceiverId = PickCall.ReceiverId.ToString(),
                             TimeCallBegan = DateTime.Now
                         });
-                        var newDetails = (from m in ctx.callInfoes
-                                          where id == m.ReceiverId
-                                          join n in ctx.CallHistories on m.ReceiverId equals id
-                                          select new {
-                                              n.CallHistoryId,
-                                              n.CallerId,
-                                              n.ReceiverId,
-                                              n.TimeCallBegan,
-                                              m.SessionId,
-                                              m.Token
-                                          }).SingleOrDefault();
+                        var result1 = ctx.SaveChanges();
+                        if (result1 < 1)
+                            return Ok("Call Failed");
 
-
-                        var result = ctx.SaveChanges();
-
-                        if (result > 1)
-                            return Ok(newDetails);
-                        else
-                            return Ok("Call failed");
+                        var call = (from c in ctx.callInfoes
+                                    where c.ReceiverId == id 
+                                    join ca in ctx.CallHistories on c.ReceiverId.ToString() equals ca.ReceiverId
+                                    select new {
+                                    c.CallInfoId,
+                                    ca.CallHistoryId,
+                                    ca.CallerId,
+                                    ca.ReceiverId,
+                                    ca.TimeCallBegan
+                                    }).FirstOrDefault();
+                       
+                        return Ok(call);
+                        
                     }
                     catch (Exception ex)
                     {
@@ -142,48 +141,6 @@ namespace videoChat.Controllers
                         }
                         else
                             return Ok("Call Not Ended");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex.InnerException;
-                    }
-                }
-            }
-
-            return Ok("Incorrect Id");
-        }
-
-        [Route("IsCallPicked/{id}"), HttpPost]
-        public IHttpActionResult IsCallPicked(Guid id)
-        {
-            using (var ctx = new videoConEntities1())
-            {
-                var recId = ctx.callInfoes
-                    .Where(a => a.ReceiverId == id)
-                    .FirstOrDefault();
-                if (recId.TimeCallPicked != null)
-                {
-                    try
-                    {
-
-                        var call = (from receiver in ctx.callInfoes
-                                    where receiver.ReceiverId == id
-                                    join callHistory in ctx.CallHistories on receiver.ReceiverId.ToString() equals callHistory.ReceiverId
-                                    select new {
-                                        receiver.CallerId,
-                                        receiver.Token,
-                                        receiver.SessionId,
-                                        callHistory.TimeCallBegan
-                                    }).SingleOrDefault();
-                        
-
-                        if (call !=null)
-                        {
-                           
-                            return Ok(call);
-                        }
-                        else
-                            return Ok("Call Has not been picked for this User");
                     }
                     catch (Exception ex)
                     {
