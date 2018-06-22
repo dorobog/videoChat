@@ -1,33 +1,5 @@
-﻿//var clientBaseUrl = "http://localhost:61465/"
-//var check = clientBaseUrl === "http://localhost:58163/"
-//var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
-//const APIKEY = 46135162;
-//var SESSIONID = "";
-//var TOKEN = "";
-
-//generate guid
-//var USERID = localStorage.getItem("UserID");
+﻿
 function ajaxcall(url, params, requestType, responseType, callback, obj = [], loadingOption = "Yes", callbackErrors) {
-	//loadingOption === "Yes" ? spinnerOn() : ""
-	//debugger;
-	//if (requestType === "POST") {
-	//    if (typeof params === "object")
-	//        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
-	//    else if (typeof params === "string") {
-	//        params = JSON.parse(params);
-	//        params['key'] = "B61C3D6D-89C1-4D67-A97B-7CD2A052B81C";
-	//        params = JSON.stringify(params);
-	//    }
-	//    //if (JSON.parse(params))
-
-	//}
-	//  else if (requestType === "GET") {
-	//if(url.match(/\?./))
-	//      url = url +  '&key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
-	//else
-	//url = url +  '?key=B61C3D6D-89C1-4D67-A97B-7CD2A052B81C';
-	//  }
-
 	var http = setajax(url, requestType);
 	ajaxcallnew(http, callback, obj, loadingOption, callbackErrors);
 	http.responseType = responseType;
@@ -60,13 +32,7 @@ function ajaxcallnew(http, callback, obj, loadingOption, callbackErrors) {
 
 //setajax
 function setajax(url, requestType, responseType) {
-	//if (window.XMLHttpRequest) {
-		// code for modern browsers
-		http = new XMLHttpRequest();
-	//} else {
-		// code for old IE browsers
-		//http = new ActiveXObject("Microsoft.XMLHTTP");
-	//}
+	http = new XMLHttpRequest();
 	http.open(requestType, url, true);
 	//Send the proper header information along with the request
 	http.setRequestHeader("Content-type", "application/json; charset=utf-8");

@@ -532,6 +532,7 @@ function makeCall(obj, otherDetail) {
 
 		window.localStorage.setItem("SessionID", obj.SessionId);
 		window.localStorage.setItem("Token", obj.Token);
+		window.localStorage.setItem("CallInfoID", obj.CallInfoId);
 		window.localStorage.setItem("ReceiverID", receiverDetail.ReceiverId);
 		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails);
 		if (SESSIONID === null && TOKEN === null)
