@@ -151,5 +151,48 @@ namespace videoChat.Controllers
 
             return Ok("Incorrect Id");
         }
+
+        [Route("IsCallPicked/{id}"), HttpPost]
+        public IHttpActionResult IsCallPicked(Guid id)
+        {
+            using (var ctx = new videoConEntities1())
+            {
+                var recId = ctx.callInfoes
+                    .Where(a => a.ReceiverId == id)
+                    .FirstOrDefault();
+                if (recId.TimeCallPicked != null)
+                {
+                    try
+                    {
+
+                        var call = (from receiver in ctx.callInfoes
+                                    where receiver.ReceiverId == id
+                                    join callHistory in ctx.CallHistories on receiver.ReceiverId.ToString() equals callHistory.ReceiverId
+                                    select new
+                                    {
+                                        receiver.CallerId,
+                                        receiver.Token,
+                                        receiver.SessionId,
+                                        callHistory.TimeCallBegan
+                                    }).SingleOrDefault();
+
+
+                        if (call != null)
+                        {
+
+                            return Ok(call);
+                        }
+                        else
+                            return Ok("Call Has not been picked for this User");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex.InnerException;
+                    }
+                }
+            }
+
+            return Ok("Incorrect Id");
+        }
     }
 }
