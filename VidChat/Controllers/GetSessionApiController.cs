@@ -97,6 +97,8 @@ namespace videoChat.Controllers
                                     join ca in ctx.CallHistories on c.ReceiverId.ToString() equals ca.ReceiverId
                                     select new {
                                     c.CallInfoId,
+                                    c.SessionId,
+                                    c.Token,
                                     ca.CallHistoryId,
                                     ca.CallerId,
                                     ca.ReceiverId,
