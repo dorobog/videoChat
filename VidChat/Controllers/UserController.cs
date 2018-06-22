@@ -52,12 +52,12 @@ namespace videoChat.Controllers
                                 select new { u.email }).Any();
 
                     var CallInfo = (from u in ctx.callInfoes
-                                    where u.ReceiverId == id
+                                    where u.ReceiverId == id && u.TimeCallPicked == null
                                     join r in ctx.Users on u.ReceiverId equals r.UserId
                                     join c in ctx.Users on u.CallerId equals c.UserId
                                     select new { r.FirstName, r.LastName_, r.Email,u.ReceiverId, u.SessionId,u.Token,CallerId = u.CallerId,CallerFirstName = c.FirstName, CallerLastName = c.LastName_ }).FirstOrDefault();
                     if (user == false || CallInfo == null)
-                        return Ok("User isn't available");
+                        return Ok("User isn't available or Call ended");
                     else
                         return Ok(CallInfo);
                 }
