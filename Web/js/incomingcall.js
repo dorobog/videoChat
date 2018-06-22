@@ -7,7 +7,7 @@ if (USERID !== null) {
 	worker.postMessage(object)
 
 	worker.onmessage = function (e) {
-		debugger;
+		//debugger;
 		if (typeof event.data === "object") {
 			obj = JSON.stringify({
 				callerName: e.data.CallerFirstName + " " + e.data.CallerLastName,
