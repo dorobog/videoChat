@@ -69,12 +69,13 @@ namespace videoChat.Controllers
 
         [Route("PickCall/{id}"), HttpPost]
         public IHttpActionResult PickCall(Guid id)
-        {
+         {
             using (var ctx = new videoConEntities1())
             {
                 var PickCall = ctx.callInfoes
                     .Where(a => a.ReceiverId == id)
                     .FirstOrDefault();
+
                 if (PickCall != null)
                 {
                     try
@@ -87,13 +88,23 @@ namespace videoChat.Controllers
                             ReceiverId = PickCall.ReceiverId.ToString(),
                             TimeCallBegan = DateTime.Now
                         });
+                        var result1 = ctx.SaveChanges();
+                        if (result1 < 1)
+                            return Ok("Call Failed");
 
-                        var result = ctx.SaveChanges();
-
-                        if (result > 1)
-                            return Ok(callInfo);
-                        else
-                            return Ok("Call failed");
+                        var call = (from c in ctx.callInfoes
+                                    where c.ReceiverId == id 
+                                    join ca in ctx.CallHistories on c.ReceiverId.ToString() equals ca.ReceiverId
+                                    select new {
+                                    c.CallInfoId,
+                                    ca.CallHistoryId,
+                                    ca.CallerId,
+                                    ca.ReceiverId,
+                                    ca.TimeCallBegan
+                                    }).FirstOrDefault();
+                       
+                        return Ok(call);
+                        
                     }
                     catch (Exception ex)
                     {
