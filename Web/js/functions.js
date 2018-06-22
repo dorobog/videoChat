@@ -17,7 +17,7 @@ function callModal(receiverObject, otherData) {
 					<div id="subscriber"></div>
 					<div id="publisher"></div>
 				</div>-->
-               <a id = "pickCall" href=${(otherData.callMode * 1) === 2 ? "call.html" : "#"}><img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /></a> <h5 id="exampleModalBody">${bodyName}</h5>
+               <a id = "pickCall" href="#"><img src="img/phone.gif" width="400" height="400" class = "rounded-circle" alt="Calling" title="Calling" /></a> <h5 id="exampleModalBody">${bodyName}</h5>
             </div>
           </div>
         </div>
@@ -26,6 +26,7 @@ function callModal(receiverObject, otherData) {
 		idName("exampleModalLabel").innerHTML = titleName + "Outgoing Call";
 		idName("exampleModalBody").innerHTML = bodyName;
 	}
+	otherData.callMode * 1 === 2 ? idName("pickCall").setAttribute("href", "call.html") : idName("pickCall").setAttribute("href", "#");
 	$('#callModal').modal('show');
 	initializeSession(APIKEY, SESSIONID, TOKEN);
 }
@@ -519,4 +520,24 @@ function clearAllLocalStorages(obj = "", purpose = "") {
 function explodeString(stringName, characterSeparator) {
     myArr = stringName.split(characterSeparator);
     return myArr;
+}
+
+//Other detail contains caller name and receiver name
+function makeCall(obj, otherDetail) {
+	debugger;
+	otherDetail = explodeString(otherDetail, " ,")
+	receiverDetail = JSON.parse(otherDetail[0]);
+	if (typeof obj === "object") {
+		otherDetails = [JSON.stringify({ callerName: FULLNAME, callMode: 1 })];
+
+		window.localStorage.setItem("SessionID", obj.SessionId);
+		window.localStorage.setItem("Token", obj.Token);
+		window.localStorage.setItem("ReceiverID", receiverDetail.ReceiverId);
+		getProfileObject(receiverDetail.ReceiverId, callModal, otherDetails);
+		if (SESSIONID === null && TOKEN === null)
+		window.location.href = "call.html"
+	}
+	else {
+		alert(obj);
+	}
 }

@@ -10,7 +10,7 @@
 		worker.onmessage = function (e) {
 			debugger;
 			if (typeof event.data === "object") {
-				initializeSession(APIKEY, event.data.SessionId, event.data.Token)
+				initializeSession(APIKEY, event.data.SessionID, event.data.Token)
 				console.log(event.data)
 			}
 			//console.log(event.data);
@@ -22,10 +22,10 @@ else {
 		SessionId: SESSIONID,
 		Token: TOKEN
 	};
-	a = window.localStorage.getItem("ReceiverID");
-	makeCall(obj, a);
-	initializeSession(APIKEY, SESSIONID, TOKEN);
+	a = JSON.stringify({ ReceiverId: window.localStorage.getItem('ReceiverID') });
 	window.localStorage.removeItem("SessionID");
 	window.localStorage.removeItem("Token");
 	window.localStorage.removeItem("ReceiverID");
+	makeCall(obj, a);
+	initializeSession(APIKEY, SESSIONID, TOKEN);
 }
