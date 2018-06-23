@@ -19,8 +19,6 @@ namespace VidChat.Models
         public Nullable<System.Guid> ReceiverId { get; set; }
         public string Token { get; set; }
         public string SessionId { get; set; }
-        public Nullable<System.DateTime> TimeCallMade { get; set; }
-        public Nullable<System.DateTime> TimeCallEnded { get; set; }
         public Nullable<System.DateTime> TimeCallPicked { get; set; }
     
         public virtual User User { get; set; }

@@ -18,7 +18,8 @@ namespace videoChat.Controllers
        
         OpenTok penTok = new OpenTok(ApiKey, ApiSecret);
 
-
+        //The Model Passed here requires two Id'd
+        //The Caller's id as well as the Receivers Id
         [Route("InitiateCall"), HttpPost]
         public IHttpActionResult IntiateCall(CallerViewModel data)
         {
@@ -67,6 +68,8 @@ namespace videoChat.Controllers
             return Ok();
         }
 
+
+        //The Id passed here is the Receiver's Id
         [Route("PickCall/{id}"), HttpPost]
         public IHttpActionResult PickCall(Guid id)
         {
@@ -85,25 +88,28 @@ namespace videoChat.Controllers
                             CallHistoryId = Guid.NewGuid(),
                             CallerId = PickCall.CallerId.ToString(),
                             ReceiverId = PickCall.ReceiverId.ToString(),
-                            TimeCallBegan = DateTime.Now
+                            TimeCallBegan = DateTime.Now,
+                            CallInfoId = PickCall.CallInfoId
+                            
                         });
-                        var newDetails = (from m in ctx.callInfoes
-                                          where id == m.ReceiverId
-                                          join n in ctx.CallHistories on m.ReceiverId equals id
-                                          select new {
-                                              n.CallHistoryId,
-                                              n.CallerId,
-                                              n.ReceiverId,
-                                              n.TimeCallBegan,
-                                              m.SessionId,
-                                              m.Token
-                                          }).SingleOrDefault();
+                        var result =  ctx.SaveChanges();
+                        if (result > 0) {
+                            var newDetails = (from m in ctx.callInfoes
+                                              where id == m.ReceiverId
+                                              join n in ctx.CallHistories on m.CallInfoId equals n.CallInfoId
+                                              select new {
+                                                  n.CallHistoryId,
+                                                  n.CallerId,
+                                                  n.CallInfoId,
+                                                  n.ReceiverId,
+                                                  n.TimeCallBegan,
+                                                  m.SessionId,
+                                                  m.Token
+                                              }).SingleOrDefault();
 
-
-                        var result = ctx.SaveChanges();
-
-                        if (result > 1)
                             return Ok(newDetails);
+                        }
+                       
                         else
                             return Ok("Call failed");
                     }
@@ -117,42 +123,46 @@ namespace videoChat.Controllers
             return Ok();
         }
 
+        //The Id passed here is either the Caller's Id or the Receiver's Id
         [Route("EndCall/{id}"), HttpPost]
         public IHttpActionResult EndCall(Guid id)
         {
-            using (var ctx = new videoConEntities1())
+            try
             {
+                using (var ctx = new videoConEntities1())
+                {
                 var EndCall = ctx.callInfoes
                     .Where(a => a.ReceiverId == id || a.CallerId == id)
                     .FirstOrDefault();
-                if (EndCall != null)
-                {
-                    try
+                    if (EndCall != null)
                     {
-                        EndCall.TimeCallPicked = DateTime.Now;
+                        var updateCallHistory = ctx.CallHistories.Where(a => a.CallInfoId == EndCall.CallInfoId).FirstOrDefault();
+                        updateCallHistory.TimeCallEnded = DateTime.Now;
+
                         ctx.callInfoes.Remove(EndCall);
 
                         var result = ctx.SaveChanges();
 
-                        if (result > 0)
-                        { 
-                        var updateTime = ctx.CallHistories.Where(a => a.CallHistoryId == id).FirstOrDefault();
-                        updateTime.TimeCallEnded = DateTime.Now;
-                            return Ok("Call Ended");
-                        }
-                        else
-                            return Ok("Call Not Ended");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex.InnerException;
+
+
+
+                        return result > 0 ? Ok("Call Ended") : Ok("Call Not Ended");
+
+
+
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
             }
 
             return Ok("Incorrect Id");
         }
-
+      
+        
+        //The Id passed here is the Receiver Id 
         [Route("IsCallPicked/{id}"), HttpPost]
         public IHttpActionResult IsCallPicked(Guid id)
         {
@@ -193,6 +203,34 @@ namespace videoChat.Controllers
             }
 
             return Ok("Incorrect Id");
+        }
+
+        //The Id passed here is the CallInfoId 
+        // it returnds true if the call has been ended "else" it returns false
+        [Route("IsCallEnded/{id}"), HttpPost]
+        public IHttpActionResult IsCallEnded(Guid id)
+        {
+            try
+            {
+                using (var ctx = new videoConEntities1())
+                {
+                    var recId = ctx.callInfoes
+                        .Where(a => a.CallInfoId == id)
+                        .FirstOrDefault();
+                    var checkCallHistory = (from u in ctx.CallHistories
+                                            where recId.CallInfoId == id
+                                            select new { u.TimeCallEnded });
+
+                    return recId == null && checkCallHistory != null ? Ok(true) : Ok(false);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+
+           
         }
     }
 }

@@ -14,6 +14,7 @@
           <Property Name="ReceiverId" Type="nvarchar(max)" />
           <Property Name="TimeCallBegan" Type="datetime" />
           <Property Name="TimeCallEnded" Type="datetime" />
+          <Property Name="CallInfoId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="callInfo">
           <Key>
@@ -24,8 +25,6 @@
           <Property Name="ReceiverId" Type="uniqueidentifier" />
           <Property Name="Token" Type="nvarchar(max)" />
           <Property Name="SessionId" Type="nvarchar(max)" />
-          <Property Name="TimeCallMade" Type="datetime" />
-          <Property Name="TimeCallEnded" Type="datetime" />
           <Property Name="TimeCallPicked" Type="datetime" />
         </EntityType>
         <EntityType Name="loggedUser">
@@ -124,8 +123,6 @@
           <Property Name="ReceiverId" Type="Guid" />
           <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SessionId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TimeCallMade" Type="DateTime" Precision="3" />
-          <Property Name="TimeCallEnded" Type="DateTime" Precision="3" />
           <Property Name="TimeCallPicked" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_callInfo_CallerUser" FromRole="callInfo" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_callInfo_ReceiverUser" FromRole="callInfo" ToRole="User" />
@@ -226,6 +223,7 @@
           <Property Name="ReceiverId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TimeCallBegan" Type="DateTime" Precision="3" />
           <Property Name="TimeCallEnded" Type="DateTime" Precision="3" />
+          <Property Name="CallInfoId" Type="Guid" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -241,8 +239,6 @@
                 <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
-                <ScalarProperty Name="TimeCallMade" ColumnName="TimeCallMade" />
-                <ScalarProperty Name="TimeCallEnded" ColumnName="TimeCallEnded" />
                 <ScalarProperty Name="TimeCallPicked" ColumnName="TimeCallPicked" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -281,6 +277,7 @@
           <EntitySetMapping Name="CallHistories">
             <EntityTypeMapping TypeName="videoConModel.CallHistory">
               <MappingFragment StoreEntitySet="CallHistory">
+                <ScalarProperty Name="CallInfoId" ColumnName="CallInfoId" />
                 <ScalarProperty Name="TimeCallEnded" ColumnName="TimeCallEnded" />
                 <ScalarProperty Name="TimeCallBegan" ColumnName="TimeCallBegan" />
                 <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
