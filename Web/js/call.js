@@ -22,10 +22,10 @@ else {
 		SessionId: SESSIONID,
 		Token: TOKEN
 	};
-	a = window.localStorage.getItem("ReceiverID");
-	makeCall(obj, a);
-	initializeSession(APIKEY, SESSIONID, TOKEN);
+	a = JSON.stringify({ ReceiverId: window.localStorage.getItem('ReceiverID') });
 	window.localStorage.removeItem("SessionID");
 	window.localStorage.removeItem("Token");
 	window.localStorage.removeItem("ReceiverID");
+	makeCall(obj, a);
+	initializeSession(APIKEY, SESSIONID, TOKEN);
 }
