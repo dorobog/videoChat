@@ -19,5 +19,6 @@ namespace VidChat.Models
         public string ReceiverId { get; set; }
         public Nullable<System.DateTime> TimeCallBegan { get; set; }
         public Nullable<System.DateTime> TimeCallEnded { get; set; }
+        public Nullable<System.Guid> CallInfoId { get; set; }
     }
 }

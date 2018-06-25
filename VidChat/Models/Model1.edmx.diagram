@@ -12,7 +12,7 @@
         <AssociationConnector Association="videoConModel.FK_callInfo_CallerUser" ManuallyRouted="false" />
         <AssociationConnector Association="videoConModel.FK_callInfo_ReceiverUser" ManuallyRouted="false" />
         <AssociationConnector Association="videoConModel.FK_User_Role" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="videoConModel.CallHistory" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="videoConModel.CallHistory" Width="1.5" PointX="4.125" PointY="4.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
