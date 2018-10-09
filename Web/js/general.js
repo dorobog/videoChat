@@ -1,7 +1,7 @@
 ﻿var clientBaseUrl = getRootUrl();
 var check = clientBaseUrl === "http://localhost:58163/"
 var apiBaseUrl = check ? "http://localhost:61465/" : "http://localhost:61465/";
-const APIKEY = 46135162;
+const APIKEY = 46200612;
 var SESSIONID = window.localStorage.getItem("SessionID");
 var TOKEN = window.localStorage.getItem("Token");;
 var FULLNAME = window.localStorage.getItem("fullName");
