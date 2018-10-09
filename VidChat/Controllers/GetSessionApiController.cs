@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Web.Http;
 using videoChat.Models;
@@ -13,8 +13,8 @@ namespace videoChat.Controllers
     public class GetSessionApiController : ApiController
     {
 
-       static int ApiKey = 46135162; // YOUR API KEY
-        static string ApiSecret = "ba51037c2dc7056236c572e4f4e187b1f9899bff";
+       static int ApiKey = 46200612; // YOUR API KEY
+        static string ApiSecret = "efa594b7b7aec05bba6c9cd897c977c787e5629d";
        
         OpenTok penTok = new OpenTok(ApiKey, ApiSecret);
 
