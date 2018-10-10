@@ -32,7 +32,7 @@ namespace videoChat.Controllers
                 {
                     try
                     {
-
+                        
                         var session = penTok.CreateSession();
                         var token = session.GenerateToken();
 
